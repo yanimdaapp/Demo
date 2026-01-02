@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Yanımda — Demo</title>
+  <title>Busemin Duygu Durumu</title>
   <style>
     :root{
       --bg1:#0b0b0d;
@@ -132,7 +132,7 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>Yanımda — Demo</h1>
+    <h1>Busemin Duygu Durumu</h1>
 
     <div class="grid">
       <button onclick="mood('Üzgünüm')">😔 Üzgünüm</button>
@@ -162,7 +162,6 @@
     </div>
   </div>
 
-  <!-- Gizli Soru Modal -->
   <div id="secretModal" class="modal" onclick="modalBgClose(event)">
     <div class="modalInner">
       <div class="modalCard" onclick="event.stopPropagation()">
@@ -176,7 +175,6 @@
     </div>
   </div>
 
-  <!-- Buluşalım Modal -->
   <div id="meetModal" class="modal" onclick="meetBgClose(event)">
     <div class="modalInner">
       <div class="modalCard" onclick="event.stopPropagation()">
@@ -193,56 +191,49 @@
   </div>
 
 <script>
-  // ====== NTFY ======
-  const TOPIC = "yanimdaappdemo";
+  const TOPIC = "Yanimdaappdemo";
   const NTFY = "https://ntfy.sh/" + TOPIC;
-
-  // Demo için gerçek olmayan numara (reklamda görünsün diye)
   const MY_PHONE = "05000000000";
-
   const MONEY_TEXT = "Kocambank devrede";
 
-  // 2'şer mesaj, "karşı taraf cevap veriyor" mantığında
   const MSG = {
     "Üzgünüm": [
-      "Tamam güzelim, anladım. İstersen beni ara; sesini duyunca hemen toparlarsın.",
-      "Gel buraya… Üzgünken yanında olmak istiyorum. Ne oldu, anlat bana."
+      "Canım… tamam. Şu an tek isteğim iyi olman. İstersen konuşalım, ben buradayım.",
+      "Üzgün olduğunu görmek içimi sıkıyor. Bir şey yapabiliyorsam söyle, birlikte toparlarız."
     ],
     "Mutluyum": [
-      "O gülüşünü özlemişim. Mutlu olman beni de mutlu etti, anlat bakalım ne oldu?",
-      "Harika! Bu modu kutlayalım. Müsaitsen birazdan arayayım mı?"
+      "Ay bunu duyunca ben de gülümsedim 😄 Anlat bakalım, ne güzel oldu seni böyle görmek!",
+      "Harika! Mutluluğun bana da bulaştı. Müsaitsen birazdan sesini duyayım mı?"
     ],
     "Özledim": [
-      "Ben de seni özledim güzelim. Buluşmaya ne dersin? Tarih/saat söyle, ayarlayayım.",
-      "Aynı hissi yaşıyorum… İlk fırsatta yanında olacağım. Şimdi bir sesini duyayım mı?"
+      "Ben de seni çok özledim… İlk fırsatta kavuşalım. Bugün/yarın bir plan yapalım mı?",
+      "Özlemin geldi mi dünyada başka bir şeyin önemi kalmıyor. Birazdan arayayım mı?"
     ],
     "Kızgınım": [
-      "Tamam, seni anlıyorum. Sakinleşince konuşalım; çözmek istiyorum.",
-      "Haklı olsan da olmasan da seni kırmak istemem. Müsait olunca arar mısın?"
+      "Tamam, seni anlıyorum. Şu an tartışmak istemem—sakinleşince konuşalım ve çözelim.",
+      "Kızgın olman boşuna değil. Kalbini kırdıysam özür dilerim. Ne hissediyorsan dinlemek istiyorum."
     ]
   };
 
-  // Buluşalım: seçenek seçince giden 2 mesaj
   const MEET = {
     "Kahve": [
-      "Tamam kahve! Nerede buluşalım? Konum at, geliyorum.",
-      "Kahve onay ✅ Saat kaçta uygun? Ben planı ayarlıyorum."
+      "Kahve güzel fikir ☕ Neredesin, konum at; geliyorum.",
+      "Tamam kahve! Oturup sakin sakin konuşalım. Saat kaç uygun?"
     ],
     "Yemek": [
-      "Yemek iyi fikir. Sen mi seçiyorsun ben mi? 😄",
-      "Tamamdır. Aç kalma, ben rezervasyonu bile düşünürüm. Saat kaç?"
+      "Yemek olsun 🍽️ Senin canın ne çekiyor? Ben ayarlıyorum.",
+      "Tamam! Sen seç ya da ben seçeyim—yeter ki buluşalım."
     ],
     "Sinema": [
-      "Sinema güzel. Film seç, bilet işini bana bırak.",
-      "Tamam! Seans ve sinema söyle; ben organize edeyim."
+      "Sinema çok iyi 🎬 Film seç, bilet benden.",
+      "Tamam! Seansı söyle; sonra biraz yürüyüş de yaparız."
     ],
     "Diğer": [
-      "Tamam, sen söyle ne istersin? Ben hazırım.",
-      "Sürpriz mi yapıyoruz? Detayı yaz, ben ‘evet’ dedim bile."
+      "Sen ne istersen… Benim tek şartım: yanında olmak.",
+      "Tamam, sürprize de varım. Planı yaz, ben hazırım."
     ]
   };
 
-  // Gizli soru (safe)
   const SECRET_ITEMS = [
     { id: "Gizli Soru 1", question: "Beni seviyor musun?", yesReply: "Biliyordum 😄\nBen de seni çok seviyorum." },
     { id: "Gizli Soru 2", question: "Beni seçer misin, yine yeniden?", yesReply: "Tam da bunu duymak istiyordum 😄\nİyi ki varsın." }
@@ -269,20 +260,17 @@
     img.src = url;
   }
 
-  // Mood
   function mood(type){
     const msg = pick(MSG[type] || ["(mesaj yok)"]);
     setStatus(msg, `${type} → gönderildi ✅`);
     ntfySend(type, msg, "high", "speech_balloon");
   }
 
-  // Money
   function money(){
     setStatus(MONEY_TEXT, "Param Bitti → gönderildi ✅");
     ntfySend("Param Bitti", MONEY_TEXT, "high", "moneybag");
   }
 
-  // Danger
   function getLocation(){
     return new Promise((resolve, reject) => {
       if(!navigator.geolocation) return reject("Konum desteklenmiyor");
@@ -305,12 +293,9 @@
     const body = `Tehlikedeyim butonuna basıldı!\nKonum: ${maps}\n(Demo arama: ${MY_PHONE})`;
     setStatus(body, "Tehlikedeyim → gönderildi ✅");
     ntfySend("Tehlikedeyim", body, "urgent", "rotating_light,warning");
-
-    // Demo: reklamda görünsün diye tel linki çalışır; istersen bunu kapatırız
     window.location.href = `tel:${MY_PHONE}`;
   }
 
-  // Meet modal
   function openMeet(){
     document.getElementById("meetModal").style.display = "block";
     ntfySend("Buluşalım", "Buluşalım menüsü açıldı.", "high", "round_pushpin");
@@ -325,7 +310,6 @@
     ntfySend("Buluşalım", `${kind} seçildi:\n${msg}`, "high", "round_pushpin");
   }
 
-  // Secret: sırayla
   function nextSecretItem(){
     const k = "idx_secret_demo";
     const idx = parseInt(localStorage.getItem(k) || "0", 10);
@@ -373,8 +357,6 @@
     noCount++;
 
     const txt = document.getElementById("secretText");
-    const yes = document.getElementById("secretYes");
-    const no  = document.getElementById("secretNo");
 
     if (noCount === 1){
       txt.textContent = "Hadi ama bir daha düşün.";
@@ -386,8 +368,8 @@
       ntfySend("Gizli Soru", `${currentSecretItem.id}\nHayır dedi (2/3) 🙈`, "high", "see_no_evil");
     } else {
       txt.textContent = "Bak son kez soruyorum.";
-      no.style.display = "none";
-      yes.style.flex = "1";
+      document.getElementById("secretNo").style.display = "none";
+      document.getElementById("secretYes").style.flex = "1";
       ntfySend("Gizli Soru", `${currentSecretItem.id}\nHayır yok oldu 😄 (3/3)`, "high", "see_no_evil");
     }
   }
